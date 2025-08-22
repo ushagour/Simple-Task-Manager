@@ -1,0 +1,16 @@
+sudo: required
+
+services:
+  - docker
+
+install:
+  - cd api && npm install
+  - cd ../client && npm install
+
+script:
+  - cd api && npm test
+  - cd ../client && npm run build
+
+after_success:
+  - docker build -t ushagour/api ./api
+  - docker build -t ushagour/client ./client

@@ -1,0 +1,4 @@
+debug.log
+.env
+db.sqlite
+node_modules/*
