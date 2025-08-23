@@ -4,12 +4,12 @@ services:
   - docker
 
 install:
-  - cd api && npm install
-  - cd ../client && npm install
+  - cd api && npm install && cd ..
+  - cd client && npm install && cd ..
 
 script:
-  - cd api && npm test
-  - cd ../client && npm run build
+  - cd api && npm test && cd ..
+  - cd client && npm run build && cd ..
 
 after_success:
   - docker build -t ushagour/api ./api
