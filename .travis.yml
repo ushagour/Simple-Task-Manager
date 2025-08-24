@@ -1,9 +1,9 @@
 sudo: required
+
 services:
   - docker
 
 before_install:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - pwd
   - ls -la
 
@@ -14,7 +14,8 @@ install:
 script:
   - cd ../api && npm test
   - cd ../client && npm run build
-  - docker build -t ushagour/client ./client
 
 after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t ushagour/client ./client
   - docker push ushagour/client
