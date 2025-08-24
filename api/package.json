@@ -1,11 +1,12 @@
 {
-  "name": "backend",
+  "name": "api",
   "version": "1.0.0",
   "description": "Node, Express and Mongo backend",
   "main": "index.js",
-  "repository": "github:mannyhenri/node-docker",
+  "repository": "github:ushagour/Simple-Task-Manager",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "babel": {
     "presets": [
