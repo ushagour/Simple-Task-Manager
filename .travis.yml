@@ -1,36 +1,23 @@
 sudo: required
-language: generic
-
 services:
   - docker
 
-# (Optional) helpful debug
 before_install:
-  - echo "Repo root contents:" && ls -la
+  - pwd
+  - ls -la
 
-# Install deps WITHOUT changing directories
 install:
-  - npm ci --prefix api
-  - npm ci --prefix client
+  - cd api && npm install
+  - cd ../client && npm install
 
-# Run tests/build WITHOUT changing directories
 script:
-  - npm test --prefix api || echo "No tests yet"
-  - npm run build --prefix client
+  - cd ../api && npm test
+  - cd ../client && npm run build
 
-# Build & push images from repo root
 after_success:
   # Login to Docker Hub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-  # Build client image using the Dockerfile inside /client
-  - export IMAGE_CLIENT="$DOCKER_USERNAME/client"
-  - export SHORT_SHA=$(echo "$TRAVIS_COMMIT" | cut -c1-7)
-
-  # Build with explicit Dockerfile path and context
-  - docker build -t "$IMAGE_CLIENT:latest" -f client/Dockerfile client
-  - docker tag "$IMAGE_CLIENT:latest" "$IMAGE_CLIENT:$SHORT_SHA"
-
-  # Push both tags
-  - docker push "$IMAGE_CLIENT:latest"
-  - docker push "$IMAGE_CLIENT:$SHORT_SHA"
+  # Build Docker image and tag it properly
+  - docker build -t $DOCKER_USERNAME/simpletaskmanager-client ./client
+  # Push the image to Docker Hub
+  - docker push $DOCKER_USERNAME/simpletaskmanager-client
